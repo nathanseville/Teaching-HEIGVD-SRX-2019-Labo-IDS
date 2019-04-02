@@ -288,7 +288,9 @@ alert tcp any any -> any any (msg:"Mon nom!"; content:"Rubinstein"; sid:4000015;
 
 ---
 
-**Reponse :**  
+**Reponse :**  Cette règle active une alerte avec comme message *Mon nom!* pour toute les connections tcp de n'importe quel port et ip vers n'importe quel port et ip où le contenu du message contient *Rubinstein*.
+
+Le sid de la règle est `4000015` et c'est la première version de celle-ci.
 
 ---
 
