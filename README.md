@@ -300,11 +300,15 @@ Utiliser un éditeur et créer un fichier `myrules.rules` sur votre répertoire 
 sudo snort -c myrules.rules -i eth0
 ```
 
-**Question 2: Que voyez-vous quand le logiciel est lancé ? Qu'est-ce que ça vaut dire ?**
+**Question 2: Que voyez-vous quand le logiciel est lancé ? Qu'est-ce que ça veut dire ?**
 
 ---
 
-**Reponse :**  
+**Reponse :**  On peut y voir le nombre de règle chargée (#nb Snort rules read), elles sont égalements groupées par catégorie (detection rules, decoder rules, preprocessor rules).
+
+On peut également voir pour chaque protocoles (tcp, udp, icml, ip) le nombre de règles par paramètre des ports source/destination parametré.
+
+![Snort lancé](images/snortL.jpg)
 
 ---
 
