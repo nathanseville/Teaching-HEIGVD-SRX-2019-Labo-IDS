@@ -318,7 +318,9 @@ Aller à un site web contenant votre nom ou votre mot clé que vous avez choisi 
 
 ---
 
-**Reponse :**  
+**Reponse :**  On peut y voir que snort détecte tout les packets, dans la capture d'écran ci-dessous on peut voir les paquets en relation avec le site *http* ou le nom de *julien* apparait (on peut le reconnaitre grâce à son ip).
+
+![Snort working](images/snortWN.jpg)
 
 ---
 
@@ -328,7 +330,47 @@ Aller au répertoire /var/log/snort. Ouvrir le fichier `alert`. Vérifier qu'il 
 
 ---
 
-**Reponse :**  
+**Reponse :**  L'alerte est un bloc de texte contenant plusieurs informations:
+
+- ID de la règle et message
+
+```
+[**] [1:4000015:1] Mon nom! [**]
+```
+
+- Priorité
+
+```
+[Priority: 0] 
+```
+
+- Date, heure, ip source:port source -> ip destination:port destination
+
+```
+04/05-03:27:52.965779 10.192.94.120:37206 -> 94.103.98.178:80
+```
+
+- Protocole, time to live, id du packet, 
+
+```
+TCP TTL:64 TOS:0x0 ID:58194 IpLen:20 DgmLen:509 DF
+```
+
+- as
+
+```
+***AP*** Seq: 0x54686DEE  Ack: 0x9CA4CD8C  Win: 0xE5  TcpLen: 32
+```
+
+- 
+
+```
+TCP Options (3) => NOP NOP TS: 1360636363 8318964 
+```
+
+
+
+![Snort alert name](images/snortN.jpg)
 
 ---
 
