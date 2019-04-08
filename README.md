@@ -350,21 +350,11 @@ Aller au répertoire /var/log/snort. Ouvrir le fichier `alert`. Vérifier qu'il 
 04/05-03:27:52.965779 10.192.94.120:37206 -> 94.103.98.178:80
 ```
 
-- Protocole, time to live, id du packet, 
+- Le header ip du packet et ses différentes informations
 
 ```
 TCP TTL:64 TOS:0x0 ID:58194 IpLen:20 DgmLen:509 DF
-```
-
-- as
-
-```
 ***AP*** Seq: 0x54686DEE  Ack: 0x9CA4CD8C  Win: 0xE5  TcpLen: 32
-```
-
-- 
-
-```
 TCP Options (3) => NOP NOP TS: 1360636363 8318964 
 ```
 
@@ -401,6 +391,12 @@ Ecrire une règle qui alerte à chaque fois que votre système reçoit un ping d
 
 **Reponse :**  
 
+`alert icmp any any -> <ip machine> any (itype: 8; msg: "Ping !"; sid:4000017; rev:1;)`
+
+L'alerte ne filtre que les paquets de type icmp. itype: 8 permet de ne prendre en compte que les paquets icmp de type 8, cela afin de ne pas prendre en compte les retours de nos pings qui sont de type 0. Les paquets de type 8 définit un paquet de type echo-request.
+
+L'ip de la machine destination est à modifier en fonction de la machine à protéger
+
 ---
 
 --
@@ -414,6 +410,10 @@ Modifier votre règle pour que les pings soient détectés dans les deux sens.
 ---
 
 **Reponse :**  
+
+`alert icmp any any <> <ip machine> any (itype: 8; msg: "Ping in/out!"; sid:4000018; rev:1;)`
+
+Le symbol <> permet d'appliquer un règle dans les deux sens. Nous gardons le itype afin de ne pas avoir la request et la réponse du même ping. L'ip de la machine est également conservé afin de ne pas capturer du traffic qui ne nous concerne pas.
 
 ---
 
@@ -430,6 +430,10 @@ Essayer d'écrire une règle qui Alerte qu'une tentative de session SSH a été 
 
 **Reponse :**  
 
+Le ssh se base sur le protocol tcp, le port utilié par défault est le 22.
+
+`alert tcp <ip collègue> any -> <ip machine> 22 (msg:"Colleague trying to connect over ssh"; sid:40000020; rev: 1;)`
+
 ---
 
 --
@@ -442,7 +446,7 @@ Lancer Wireshark et faire une capture du trafic sur l'interface connectée au br
 
 ---
 
-**Reponse :**  
+**Reponse :**  Avec l'option `-r`, elle permet de lire un fichier de type `tcpdump`.
 
 ---
 
