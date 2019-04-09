@@ -308,6 +308,8 @@ sudo snort -c myrules.rules -i eth0
 
 On peut également voir pour chaque protocoles (tcp, udp, icml, ip) le nombre de règles par paramètre des ports source/destination parametré.
 
+D'autre statistique sont égalements disponible.
+
 ![Snort lancé](images/snortL.jpg)
 
 ---
@@ -358,8 +360,6 @@ TCP TTL:64 TOS:0x0 ID:58194 IpLen:20 DgmLen:509 DF
 TCP Options (3) => NOP NOP TS: 1360636363 8318964 
 ```
 
-
-
 ![Snort alert name](images/snortN.jpg)
 
 ---
@@ -377,6 +377,16 @@ Ecrire une règle qui journalise (sans alerter) un message à chaque fois que Wi
 
 **Reponse :**  
 
+`log tcp 10.192.94.120 any -> 91.198.174.192 any (msg:"Wikipedia"; sid:40000016; rev:1;)`
+
+L'adresse ip de wikipédia peut changer, il peut être nécessaire de la modifier.
+
+Les logs snort sont journalisé dans le dossier `/var/log/snort/snort.log.xxxxxxxxxx` au format de type `pcap`, où xxxxxxxxxx est l'heure Unix du commencement du journal.
+
+Tout les échanges entre la machine hôte et wikipedia ont été journalisé.
+
+![Snort alert name](images/snortlo.jpg)
+
 ---
 
 --
@@ -391,11 +401,13 @@ Ecrire une règle qui alerte à chaque fois que votre système reçoit un ping d
 
 **Reponse :**  
 
-`alert icmp any any -> <ip machine> any (itype: 8; msg: "Ping !"; sid:4000017; rev:1;)`
+`alert icmp any any -> 10.192.94.120 any (itype: 8; msg: "Ping !"; sid:4000017; rev:1;)`
 
 L'alerte ne filtre que les paquets de type icmp. itype: 8 permet de ne prendre en compte que les paquets icmp de type 8, cela afin de ne pas prendre en compte les retours de nos pings qui sont de type 0. Les paquets de type 8 définit un paquet de type echo-request.
 
-L'ip de la machine destination est à modifier en fonction de la machine à protéger
+L'ip de la machine destination est à modifier en fonction de la machine à protéger.
+
+![Snort alert name](images/snortP.jpg)
 
 ---
 
@@ -411,12 +423,15 @@ Modifier votre règle pour que les pings soient détectés dans les deux sens.
 
 **Reponse :**  
 
-`alert icmp any any <> <ip machine> any (itype: 8; msg: "Ping in/out!"; sid:4000018; rev:1;)`
+`alert icmp any any <> 10.192.94.120 any (itype: 8; msg: "Ping in/out!"; sid:4000018; rev:1;)`
 
-Le symbol <> permet d'appliquer un règle dans les deux sens. Nous gardons le itype afin de ne pas avoir la request et la réponse du même ping. L'ip de la machine est également conservé afin de ne pas capturer du traffic qui ne nous concerne pas.
+Le symbol <> permet d'appliquer un règle dans les deux sens. Nous gardons le itype afin de ne pas avoir la request et la réponse du même ping.
+
+L'ip de la machine est également conservé afin de ne pas capturer du traffic qui ne nous concerne pas.
+
+![Snort alert name](images/snortP2.jpg)
 
 ---
-
 
 --
 
@@ -432,7 +447,11 @@ Essayer d'écrire une règle qui Alerte qu'une tentative de session SSH a été 
 
 Le ssh se base sur le protocol tcp, le port utilié par défault est le 22.
 
-`alert tcp <ip collègue> any -> <ip machine> 22 (msg:"Colleague trying to connect over ssh"; sid:40000020; rev: 1;)`
+`alert tcp 10.192.106.215 any -> 10.192.94.120 22 (msg:"Colleague trying to connect over ssh"; sid:40000020; rev: 1;)`
+
+Lorsque le collègue `10.192.106.215` essaie de se connecter sur le port *22* (`ssh`) à l''ip de la machine à protéger.
+
+![Snort alert name](images/snortS.jpg)
 
 ---
 
@@ -448,6 +467,10 @@ Lancer Wireshark et faire une capture du trafic sur l'interface connectée au br
 
 **Reponse :**  Avec l'option `-r`, elle permet de lire un fichier de type `tcpdump`.
 
+![Snort alert name](images/wireSC.jpg)
+
+![Snort alert name](images/wireSPC.jpg)
+
 ---
 
 Utiliser l'option correcte de Snort pour analyser le fichier de capture Wireshark.
@@ -456,7 +479,13 @@ Utiliser l'option correcte de Snort pour analyser le fichier de capture Wireshar
 
 ---
 
-**Reponse :**  
+**Reponse :**  Le comportement est le même qu'avec un analyse en temps réel. Il n'y a aucune différence par rapport à un analyse en temps réel, snort ne fait aucune différence à part que l'analyse est instantanée. Les alertes sont aussi enregistrée dans le fichier d'alertes.
+
+La règle du ping bidirectionnel a été utilisée.
+
+`snort -r capture.pcapng -c myrules.rules`
+
+![Snort alert name](images/snortAW.jpg)
 
 ---
 
