@@ -385,7 +385,7 @@ Les logs snort sont journalisé dans le dossier `/var/log/snort/snort.log.xxxxxx
 
 Tout les échanges entre la machine hôte et wikipedia ont été journalisé.
 
-![Snort alert name](images/snortlo.jpg)
+![Snort log wiki](images/snortlo.jpg)
 
 ---
 
@@ -407,7 +407,7 @@ L'alerte ne filtre que les paquets de type icmp. itype: 8 permet de ne prendre e
 
 L'ip de la machine destination est à modifier en fonction de la machine à protéger.
 
-![Snort alert name](images/snortP.jpg)
+![Snort alert ping](images/snortP.jpg)
 
 ---
 
@@ -429,7 +429,7 @@ Le symbol <> permet d'appliquer un règle dans les deux sens. Nous gardons le it
 
 L'ip de la machine est également conservé afin de ne pas capturer du traffic qui ne nous concerne pas.
 
-![Snort alert name](images/snortP2.jpg)
+![Snort alert ping <>](images/snortP2.jpg)
 
 ---
 
@@ -451,7 +451,7 @@ Le ssh se base sur le protocol tcp, le port utilié par défault est le 22.
 
 Lorsque le collègue `10.192.106.215` essaie de se connecter sur le port *22* (`ssh`) à l''ip de la machine à protéger.
 
-![Snort alert name](images/snortS.jpg)
+![Snort alert ssh](images/snortS.jpg)
 
 ---
 
@@ -467,9 +467,9 @@ Lancer Wireshark et faire une capture du trafic sur l'interface connectée au br
 
 **Reponse :**  Avec l'option `-r`, elle permet de lire un fichier de type `tcpdump`.
 
-![Snort alert name](images/wireSC.jpg)
+![Wireshark capture](images/wireSC.jpg)
 
-![Snort alert name](images/wireSPC.jpg)
+![Wireshark pcap tcpdump](images/wireSPC.jpg)
 
 ---
 
@@ -485,7 +485,7 @@ La règle du ping bidirectionnel a été utilisée.
 
 `snort -r capture.pcapng -c myrules.rules`
 
-![Snort alert name](images/snortAW.jpg)
+![Snort alert from wireshrak pcap](images/snortAW.jpg)
 
 ---
 
