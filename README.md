@@ -385,7 +385,7 @@ Les logs snort sont journalisé dans le dossier `/var/log/snort/snort.log.xxxxxx
 
 Tout les échanges entre la machine hôte et wikipedia ont été journalisé.
 
-![Snort log wiki](images/snortlo.jpg)
+![Snort log wiki](images/snortLo.jpg)
 
 ---
 
